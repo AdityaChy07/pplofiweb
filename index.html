@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panchobh Premier League - Season 2</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* --- Variables / Theme Colors --- */
+    :root {
+      --clr-bg-dark: #0b0b0b;
+      --clr-bg-overlay: rgba(11, 11, 11, 0.7);
+      --clr-accent: #f8d210;
+      --clr-accent2: #ff4b4b;
+      --clr-accent3: #4CAF50;
+      --clr-muted: #cccccc;
+      --clr-white: #ffffff;
+      --radius: 12px;
+      --transition: all 0.3s ease;
+    }
+    
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body, html {
+      height:100%;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      color: white;
+      scroll-behavior: smooth;
+    }
+
+    /* --- Background with image + animated gradient overlay --- */
+    body {
+      background: url('https://i.pinimg.com/736x/60/f9/fe/60f9fea695f50e2c9215a29279f92a02.jpg') center/cover no-repeat fixed;
+      position: relative;
+    }
+    body::before {
+      content:"";
+      position:absolute;
+      top:0; left:0; width:100%; height:100%;
+      background: linear-gradient(-45deg, rgba(11,11,11,0.8), rgba(26,10,52,0.6), rgba(11,11,11,0.8));
+      background-size:400% 400%;
+      animation: gradientAnim 20s ease infinite;
+      z-index:-1;
+    }
+    @keyframes gradientAnim {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+      100% { background-position: 0% 0%; }
+    }
+
+    /* --- Navbar --- */
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      background: rgba(0,0,0,0.7);
+      position: sticky;
+      top:0;
+      padding:15px;
+      z-index:1000;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    nav a {
+      color: var(--clr-accent);
+      margin: 0 15px;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 600;
+      transition: var(--transition);
+      position: relative;
+      padding: 5px 0;
+    }
+    nav a:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--clr-accent2);
+      transition: var(--transition);
+    }
+    nav a:hover, nav a.active {
+      color: white;
+    }
+    nav a:hover:after, nav a.active:after {
+      width: 100%;
+    }
+
+    /* --- Sections --- */
+    .section {
+      display:none;
+      padding: 80px 20px;
+      max-width: 1200px;
+      margin: auto;
+      animation: fadeIn 1s ease;
+      position: relative;
+      z-index: 1;
+    }
+    #home { 
+      display:block; 
+      text-align: center;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform: translateY(20px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+
+    /* --- Logo Home --- */
+    .logo {
+      position: relative;
+      margin-bottom: 30px;
+    }
+    .logo img {
+      width: 280px;
+      border-radius: 50%;
+      box-shadow: 0 0 35px rgba(248,210,16,0.8);
+      margin-bottom:20px;
+      border: 5px solid var(--clr-accent);
+      transition: var(--transition);
+    }
+    .logo img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 45px rgba(248,210,16,0.9);
+    }
+
+    /* --- Heading Styles --- */
+    .section h1 {
+      font-size: 3.5rem;
+      color: var(--clr-accent);
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .section h2 {
+      font-size: 2.2rem;
+      color: var(--clr-accent);
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+    .section h2:after {
+      content: '';
+      position: absolute;
+      width: 60%;
+      height: 3px;
+      background: var(--clr-accent);
+      bottom: -10px;
+      left: 0;
+      border-radius: 2px;
+    }
+    .section p {
+      color: var(--clr-muted);
+      margin-bottom:25px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    /* --- Countdown --- */
+    #countdown {
+      font-size: 2.2rem;
+      margin: 30px 0;
+      font-weight: bold;
+      color: var(--clr-accent);
+      text-shadow: 0 0 10px var(--clr-accent), 0 0 20px var(--clr-accent2);
+      animation: glowCountdown 2s infinite alternate;
+      background: rgba(0,0,0,0.4);
+      padding: 15px 30px;
+      border-radius: var(--radius);
+      border: 1px solid var(--clr-accent);
+    }
+    @keyframes glowCountdown {
+      from { text-shadow: 0 0 10px var(--clr-accent), 0 0 20px var(--clr-accent2); }
+      to { text-shadow: 0 0 20px var(--clr-accent2), 0 0 40px var(--clr-accent); }
+    }
+    .countdown-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .countdown-item {
+      background: rgba(0,0,0,0.6);
+      padding: 15px;
+      border-radius: var(--radius);
+      min-width: 100px;
+      border: 1px solid var(--clr-accent);
+    }
+    .countdown-value {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--clr-accent);
+    }
+    .countdown-label {
+      font-size: 0.9rem;
+      color: var(--clr-muted);
+    }
+
+    /* --- Buttons --- */
+    .btn {
+      display:inline-block;
+      background: var(--clr-accent);
+      color: #111;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+    .btn:hover {
+      background: var(--clr-accent2);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+    .btn:hover:before {
+      left: 100%;
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid var(--clr-accent);
+      color: var(--clr-accent);
+    }
+    .btn-secondary:hover {
+      background: var(--clr-accent);
+      color: #111;
+    }
+
+    /* --- Registration cards layout --- */
+    .reg-card {
+      background: rgba(0,0,0,0.6);
+      padding: 30px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.1);
+      max-width:700px;
+      margin: 30px auto;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      transition: var(--transition);
+    }
+    .reg-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+    .notice {
+      margin-top:20px;
+      color: var(--clr-accent2);
+      font-weight:700;
+      background: rgba(255,75,75,0.2);
+      padding:15px;
+      border-radius: var(--radius);
+      border-left: 4px solid var(--clr-accent2);
+    }
+
+    /* --- Rules Cards --- */
+    .rules-grid {
+      display:grid;
+      gap:25px;
+      grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+      margin-top:40px;
+    }
+    .rule-card {
+      background: rgba(0,0,0,0.6);
+      padding:25px;
+      border-radius: var(--radius);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: var(--transition);
+      color: #fff;
+      border-top: 3px solid var(--clr-accent);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .rule-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(248,210,16,0.2);
+    }
+    .rule-card h3 {
+      margin-bottom:15px;
+      color: var(--clr-accent);
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+    }
+    .rule-card h3 i {
+      margin-right: 10px;
+    }
+    .rule-card ul, .rule-card ol {
+      margin-left: 20px;
+      color: var(--clr-muted);
+      flex-grow: 1;
+    }
+    .rule-card li {
+      margin-bottom: 8px;
+    }
+
+    /* --- Photo Gallery --- */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      aspect-ratio: 4/3;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+    .gallery-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.4);
+      border-radius: var(--radius);
+      padding: 40px;
+      text-align: center;
+    }
+    .gallery-placeholder i {
+      font-size: 3rem;
+      color: var(--clr-accent);
+      margin-bottom: 15px;
+    }
+
+    /* --- Teams Section --- */
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+    .team-card {
+      background: rgba(0,0,0,0.6);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      transition: var(--transition);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .team-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      border-color: var(--clr-accent);
+    }
+    .team-logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 15px;
+      border: 3px solid var(--clr-accent);
+      background: #fff;
+      padding: 5px;
+    }
+    .team-name {
+      color: var(--clr-accent);
+      margin-bottom: 10px;
+    }
+    .team-details {
+      color: var(--clr-muted);
+      font-size: 0.9rem;
+    }
+
+    /* --- Contact --- */
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .contact-item i {
+      font-size: 1.5rem;
+      color: var(--clr-accent);
+      width: 30px;
+    }
+    .contact a {
+      color: var(--clr-accent);
+      text-decoration: none;
+      font-weight:700;
+      transition: var(--transition);
+    }
+    .contact a:hover {
+      color: var(--clr-white);
+      text-decoration: underline;
+    }
+
+    /* --- Footer --- */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.8);
+      margin-top: 50px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* --- Floating Insta Icon --- */
+    .insta-float {
+      position: fixed;
+      bottom:20px;
+      right:20px;
+      background: #e1306c;
+      color: white;
+      width:60px;
+      height:60px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      text-decoration:none;
+      box-shadow: 0 0 20px rgba(225,48,108,0.8);
+      animation: pulse 2s infinite;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+    .insta-float:hover {
+      transform: scale(1.1);
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px rgba(225,48,108,0.8); }
+      50% { box-shadow: 0 0 30px rgba(225,48,108,1); }
+      100% { box-shadow: 0 0 10px rgba(225,48,108,0.8); }
+    }
+
+    /* --- Back to Top Button --- */
+    .back-to-top {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      background: var(--clr-accent);
+      color: #111;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      text-decoration: none;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .back-to-top:hover {
+      background: var(--clr-accent2);
+      color: white;
+    }
+
+    /* --- Loading Animation --- */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--clr-bg-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+    .loader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(248,210,16,0.3);
+      border-radius: 50%;
+      border-top-color: var(--clr-accent);
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* --- Media Responsive --- */
+    @media(max-width:992px) {
+      .section h1 {
+        font-size: 2.8rem;
+      }
+      .section h2 {
+        font-size: 1.8rem;
+      }
+    }
+
+    @media(max-width:768px) {
+      .logo img { width:200px; }
+      nav a { margin:5px; font-size:16px; }
+      .section {
+        padding: 60px 15px;
+      }
+      .section h1 {
+        font-size: 2.2rem;
+      }
+      .section h2 {
+        font-size: 1.6rem;
+      }
+      #countdown {
+        font-size: 1.5rem;
+        padding: 10px 20px;
+      }
+      .countdown-value {
+        font-size: 1.8rem;
+      }
+      .countdown-item {
+        min-width: 70px;
+        padding: 10px;
+      }
+      .rules-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width:480px) {
+      nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      .logo img { width:150px; }
+      .section h1 {
+        font-size: 1.8rem;
+      }
+      .countdown-container {
+        gap: 8px;
+      }
+      .countdown-item {
+        min-width: 60px;
+        padding: 8px;
+      }
+      .countdown-value {
+        font-size: 1.5rem;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Loading Animation -->
+  <div class="loader">
+    <div class="loader-spinner"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav>
+    <a href="#home" class="active" onclick="showSection('home', this)"><i class="fas fa-home"></i> Home</a>
+    <a href="#playerReg" onclick="showSection('playerReg', this)"><i class="fas fa-user-plus"></i> Player Registration</a>
+    <a href="#teamReg" onclick="showSection('teamReg', this)"><i class="fas fa-users"></i> Team Registration</a>
+    <a href="#photos" onclick="showSection('photos', this)"><i class="fas fa-images"></i> Photos</a>
+    <a href="#rules" onclick="showSection('rules', this)"><i class="fas fa-book"></i> Rules</a>
+    <a href="#teams" onclick="showSection('teams', this)"><i class="fas fa-tshirt"></i> Teams</a>
+    <a href="#contact" onclick="showSection('contact', this)"><i class="fas fa-envelope"></i> Contact</a>
+  </nav>
+
+  <!-- Sections -->
+  <section id="home" class="section">
+    <div class="logo">
+      <img src="WhatsApp Image 2025-09-04 at 14.30.46_55527f67.jpg" alt="PPL Logo">
+    </div>
+    <h1>Panchobh Premier League</h1>
+    <h2>Season 2</h2>
+    <p>Get ready for the most exciting cricket tournament of the year! Four teams, intense competition, and unforgettable moments await.</p>
+    
+    <div id="countdown"></div>
+    
+    <div class="countdown-container">
+      <div class="countdown-item">
+        <div class="countdown-value" id="days">00</div>
+        <div class="countdown-label">Days</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-value" id="hours">00</div>
+        <div class="countdown-label">Hours</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-value" id="minutes">00</div>
+        <div class="countdown-label">Minutes</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-value" id="seconds">00</div>
+        <div class="countdown-label">Seconds</div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 30px;">
+      <a href="#playerReg" onclick="showSection('playerReg')" class="btn">Register Now</a>
+      <a href="#rules" onclick="showSection('rules')" class="btn btn-secondary">Tournament Rules</a>
+    </div>
+  </section>
+
+  <section id="playerReg" class="section">
+    <h2><i class="fas fa-user-plus"></i> Player Registration</h2>
+    <div class="reg-card">
+      <p>Register now to showcase your cricket skills in Panchobh Premier League Season 2. Please provide accurate information to ensure your eligibility.</p>
+      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSehXuhf3fYJ9fFAQWcctUB7p9Yz1I2nZcG-yPEWowk_yIoN5w/viewform?usp=dialog" target="_blank">
+        <i class="fas fa-external-link-alt"></i> Open Player Registration Form
+      </a>
+      <div class="notice">
+        <i class="fas fa-exclamation-circle"></i> Important: Incorrect information may lead to disqualification.
+      </div>
+    </div>
+  </section>
+
+  <section id="teamReg" class="section">
+    <h2><i class="fas fa-users"></i> Team Registration</h2>
+    <div class="reg-card">
+      <p>Team owners and captains can register their teams here. Ensure all details are accurate to avoid any issues during the auction process.</p>
+      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeORZfrBugB3hmwdx4vklkZY9O7bFwqfczxiAj63Ou-rd72og/viewform?usp=dialog" target="_blank">
+        <i class="fas fa-external-link-alt"></i> Open Team Registration Form
+      </a>
+      <div class="notice">
+        <i class="fas fa-exclamation-circle"></i> Notice: Providing incorrect details will lead to registration disqualification.
+      </div>
+    </div>
+  </section>
+
+  <section id="photos" class="section">
+    <h2><i class="fas fa-images"></i> Photo Gallery</h2>
+    <p>Relive the exciting moments from previous matches and events.</p>
+    
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="https://placehold.co/600x400/333333/FFFFFF/png?text=Cricket+Action+Shot" alt="Cricket Action">
+      </div>
+      <div class="gallery-item">
+        <img src="https://th.bing.com/th/id/OIP.YwFOrrQOaOxZrDY0SFpANwHaEK?w=302&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" alt="Team Celebration">
+      </div>
+      <div class="gallery-item">
+        <img src="https://placehold.co/600x400/333333/FFFFFF/png?text=Trophy+Ceremony" alt="Trophy Ceremony">
+      </div>
+      <div class="gallery-item">
+        <img src="https://placehold.co/600x400/333333/FFFFFF/png?text=Player+Portrait" alt="Player Portrait">
+      </div>
+      <div class="gallery-item">
+        <img src="https://placehold.co/600x400/333333/FFFFFF/png?text=Match+Action" alt="Match Action">
+      </div>
+      <div class="gallery-item">
+        <img src="https://placehold.co/600x400/333333/FFFFFF/png?text=Crowd+Reaction" alt="Crowd Reaction">
+      </div>
+    </div>
+    
+    <div class="gallery-placeholder">
+      <i class="fas fa-camera"></i>
+      <p>More exciting photos from Season 2 will be added soon!</p>
+    </div>
+  </section>
+
+  <section id="rules" class="section">
+    <h2><i class="fas fa-book"></i> Tournament Official Rules & Regulations</h2>
+    <p>Please review all rules carefully before participating in the tournament.</p>
+    
+    <div class="rules-grid">
+      <div class="rule-card">
+        <h3><i class="fas fa-sitemap"></i> Tournament Structure</h3>
+        <ul>
+          <li>Total Teams: 4</li>
+          <li>Players per Team: Min 14, Max within ₹800 budget</li>
+          <li>Team Wallet: ₹800 per team</li>
+          <li>Base Price for Players: ₹25 – ₹50 (multiples of ₹5)</li>
+          <li>Bidding Increment: ₹5 per bid</li>
+          <li>Match Format: 10 overs per side</li>
+          <li>No player plays for more than one team</li>
+          <li>Each new innings starts with a new ball</li>
+        </ul>
+      </div>
+      <div class="rule-card">
+        <h3><i class="fas fa-gavel"></i> Auction Rules</h3>
+        <ol>
+          <li><b>Player Registration</b>: Name, Role, Base Price</li>
+          <li><b>Auction Order</b>: Randomly or Category-wise</li>
+          <li><b>Bidding Process</b>: Teams bid in ₹5 increments from base price</li>
+          <li><b>Budget & Squad Limits</b>: Must stay within wallet ₹800</li>
+          <li><b>Unsold Players</b>: Can be reintroduced at same/reduced base price</li>
+          <li><b>End of Auction</b>: Final squads locked (≤ ₹800 spend)</li>
+        </ol>
+      </div>
+      <div class="rule-card">
+        <h3><i class="fas fa-baseball-ball"></i> Match & Player Rules</h3>
+        <ul>
+          <li>Respect for Umpires — decisions are final</li>
+          <li>Punctuality: arrive 15 minutes early; 10 min delay = 3 balls deducted</li>
+          <li>Dress Code: track pants + shoes; no shoes = penalty</li>
+          <li>Pre-match Guidance by umpires</li>
+          <li>Eligibility & Challenges rules</li>
+          <li>Snacks provided for knockout stage</li>
+        </ul>
+      </div>
+      <div class="rule-card">
+        <h3><i class="fas fa-trophy"></i> Tournament Progression</h3>
+        <ul>
+          <li>League Stage: each team plays others once</li>
+          <li>1st place → Final</li>
+          <li>2nd & 3rd → Semifinal; winner meets 1st in Final</li>
+          <li>4th is out</li>
+          <li>Tie resolved by Net Run Rate (NRR)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="teams" class="section">
+    <h2><i class="fas fa-tshirt"></i> Teams</h2>
+    <p>Meet the four competing teams of Panchobh Premier League Season 2.</p>
+    
+    <div class="teams-grid">
+      <div class="team-card">
+        <img src="https://placehold.co/100x100/333333/FFFFFF/png?text=Team+A" alt="Team A" class="team-logo">
+        <h3 class="team-name">LALITA EXPRESS</h3>
+        <p class="team-details">Captain: ADITYA CHOUDHARY<br>Owner:VIVEAK CHOUDHARY</p>
+      </div>
+      <div class="team-card">
+        <img src="https://placehold.co/100x100/333333/FFFFFF/png?text=Team+B" alt="Team B" class="team-logo">
+        <h3 class="team-name">PANCHOBH WARRIOR</h3>
+        <p class="team-details">Captain:SAHIL CHOUDHARY<br>Owner: VISHAL CHOUDHARY</p>
+      </div>
+      <div class="team-card">
+        <img src="https://placehold.co/100x100/333333/FFFFFF/png?text=Team+C" alt="Team C" class="team-logo">
+        <h3 class="team-name">RCG</h3>
+        <p class="team-details">Captain: MOHIT CHOUDHARY <br>Owner:RAJU CHOUDHARY</p>
+      </div>
+      <div class="team-card">
+        <img src="https://placehold.co/100x100/333333/FFFFFF/png?text=Team+D" alt="Team D" class="team-logo">
+        <h3 class="team-name">UETARWARI TOLE</h3>
+        <p class="team-details">Captain: PARKASH<br>Owner: SAMBHU CHUDHARY</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+    <p>Have questions about the tournament? Get in touch with us!</p>
+    
+    <div class="contact-info">
+      <div class="contact-item">
+        <i class="fas fa-phone"></i>
+        <span>📞 9142668937</span>
+      </div>
+      <div class="contact-item">
+        <i class="fas fa-envelope"></i>
+        <span> <link   mailto:"adityachy417@gmail.com"></span>
+      </div>
+      <div class="contact-item">
+        <i class="fab fa-instagram"></i>
+        <span>📸 <a href="https://www.instagram.com/invites/contact/?igsh=1tfk5xie5oa75&utm_content=w482w2s" target="_blank">PPL Instagram</a></span>
+      </div>
+      <div class="contact-item">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>📍 Panchobh Cricket Ground, Maharashtra</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Insta Icon -->
+  <a href="https://www.instagram.com/cricketdilsai?igsh=cDFlejAzamVzMnh5&utm_source=ig_contact_invite" target="_blank" class="insta-float">
+    <i class="fab fa-instagram"></i>
+  </a>
+
+  <!-- Back to Top Button -->
+  <a href="#" class="back-to-top">
+    <i class="fas fa-arrow-up"></i>
+  </a>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Panchobh Premier League.</p>
+    <p style="margin-top: 10px;"><b>Aditya project</b></p>
+  </footer>
+
+  <!-- JS for navigation & countdown -->
+  <script>
+    // Loading animation
+    window.addEventListener('load', function() {
+      const loader = document.querySelector('.loader');
+      setTimeout(function() {
+        loader.classList.add('hidden');
+      }, 1000);
+    });
+
+    // Show section and manage active nav link
+    function showSection(id, el) {
+      document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+      const sec = document.getElementById(id);
+      if(sec) sec.style.display = 'block';
+
+      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+      if(el) el.classList.add('active');
+      
+      // Scroll to top when changing sections
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Countdown timer
+    const targetDate = new Date("2025-10-22T00:00:00").getTime();
+    
+    function updateCountdown(){
+      const now = Date.now();
+      let diff = targetDate - now;
+      
+      if(diff <= 0){
+        document.getElementById('countdown').innerText = "🎉 Tournament Started!";
+        clearInterval(interval);
+        return;
+      }
+      
+      const days = Math.floor(diff / (1000*60*60*24));
+      diff -= days * (1000*60*60*24);
+      
+      const hours = Math.floor(diff / (1000*60*60));
+      diff -= hours * (1000*60*60);
+      
+      const mins = Math.floor(diff / (1000*60));
+      diff -= mins * (1000*60);
+      
+      const secs = Math.floor(diff / 1000);
+      
+      // Update individual countdown elements
+      document.getElementById('days').innerText = days.toString().padStart(2, '0');
+      document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+      document.getElementById('minutes').innerText = mins.toString().padStart(2, '0');
+      document.getElementById('seconds').innerText = secs.toString().padStart(2, '0');
+      
+      // Update the main countdown text
+      document.getElementById('countdown').innerText = 
+        `Tournament Starts In: ${days}d ${hours}h ${mins}m ${secs}s`;
+    }
+    
+    const interval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Back to top button
+    const backToTopButton = document.querySelector('.back-to-top');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('show');
+      } else {
+        backToTopButton.classList.remove('show');
+      }
+    });
+    
+    backToTopButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
